@@ -21,6 +21,7 @@
             display: flex;
             justify-content: space-between;
             padding-top: 20px;  
+            margin-bottom: 60px;
 
         }
         footer {
@@ -48,14 +49,14 @@
         {% endblock %}
 </head>
 <body>
-        <div>
-            <nav id="Nav">
-                <a href="/commissions/list" class="nav-item nav-link"> Commissions</a>
-                <a href="/merchstore/items" class="nav-item nav-link"> Merchandise Store</a>
-                <a href="/wiki/articles" class="nav-item nav-link"> Wiki </a>
-                <a href="/blog/articles" class="nav-item nav-link"> Blog </a>
-            </nav>
-        </div>
+    <div>
+        <nav id="Nav">
+            <a href="/commissions/list" class="nav-item nav-link"> Commissions</a>
+            <a href="/merchstore/items" class="nav-item nav-link"> Merchandise Store</a>
+            <a href="/wiki/articles" class="nav-item nav-link"> Wiki </a>
+            <a href="/blog/articles" class="nav-item nav-link"> Blog </a>
+        </nav>
+    </div>
     <main>
         <div class="container">
             {%block content%}
