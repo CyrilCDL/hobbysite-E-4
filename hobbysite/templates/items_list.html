@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    Products
+{% endblock title %}
+{% block styles %}
+<style>
+    
+    a {
+        color:#333;
+        text-decoration:none;
+        }
+
+    .headbar {
+        background-color: #333;
+        color: #fff;
+        padding: 10px 200px;
+        text-align: center;
+        font-family:Verdana, sans-serif;
+        word-wrap: break-word;
+     }
+
+    .typebar {
+        background-color: #4c4444;
+        color: #fff;
+        padding: 0px;
+        text-align: center;
+        font-family:Verdana, sans-serif;
+        word-wrap: break-word;
+    }
+
+    .product-box {
+        background-color: lightgray;
+        box-sizing: border-box;
+        padding: 5px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        cursor: pointer;
+    }
+
+    .product-box:hover {
+        background-color: rgba(144, 117, 117, 0.679);
+    }
+</style>
+{% endblock styles%}
+{% block content %}
+<h1 class = "headbar">Products</h1>
+    <h2>
+        <p style="font-size: 36pt; margin-right: 15px;">
+            {% for product_type in object_list %}
+                <p class = "typebar">
+                    {{ product_type.name }}
+                </p>
+                {% for product in product_type.products.all %}
+                    <a href="{{ product.get_absolute_url }}">
+                        <div class ="product-box">
+                            {{ product }}
+                        </div>
+                    </a>
+                {% endfor %}
+            {% endfor %}
+        </p>
+    </h2>
+{% endblock content %}
