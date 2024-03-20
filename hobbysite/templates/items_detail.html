@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    {{ product.name }}
+{% endblock title %}
+{% block styles %}
+<style>
+    .box {
+        background-color: #4c4444;
+        color: #fff;
+        margin-top: 180px;
+        width: 500px;
+        height: 130px;
+        padding-top: 1px;
+        text-align: center;
+        font-family:Verdana, sans-serif;
+        word-wrap: break-word;
+    }
+    .description {
+        width: 500px;
+        word-wrap: break-word;
+    }
+    .headbar {
+        background-color: #333;
+        color: #fff;
+        padding: 10px 200px;
+        text-align: center;
+        font-family:Verdana, sans-serif;
+        word-wrap: break-word;
+     }
+</style>
+{% endblock styles%}
+{% block content %}
+    <div class ="box">
+        <h1>{{ product.name }}</h1>
+        <p>Php {{ product.price }}</p>
+    </div>
+    <div class="description">
+        <p>{{ product.description }}</p>
+    </div>
+    <a href=/merchstore/items>Return to Products List</a>
+{% endblock content %}
