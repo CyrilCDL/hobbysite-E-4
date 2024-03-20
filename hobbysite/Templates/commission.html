@@ -25,18 +25,13 @@
     </ul>
 </section>
     <h3> Comments </h3>
-    {% for comment in commission.comments_set.all %}     
+        {% for comment in commission.comments_set.all %}     
         <ul>
             <li>{{ comment.entry }}</li>
             <p><strong> Created On:</strong>{{comment.created}}</p>
             <p><strong> Updated On:</strong>{{comment.updated}}</p>
         </ul>
-            {% empty %}
-                <li> No comments yet. Be the first to comment!</li>
-            {% endfor %}
-        
-</div>
-    
-
-
+        {% empty %}
+            <li> No comments yet. Be the first to comment!</li>
+        {% endfor %}  
 {% endblock %}
