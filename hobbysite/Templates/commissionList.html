@@ -16,14 +16,18 @@
     .content {
             flex-grow: 3;
         }
-    a {
-        color: blue;
-    }
     main {
             display: flex;
             justify-content: space-between;
             padding-top: 20px;  
     }
+    a:link {
+        color:#fff;
+        }
+    a:visited{
+        color: blue;
+    }
+
 </style>
 {% endblock %}
 {% block content %}
@@ -35,7 +39,6 @@
                 <p><strong>Title:</strong> {{ commission.title }}</p>
                 <p><strong>Description:</strong> {{ commission.description }}</p>
                 <p><strong>People Required:</strong> {{ commission.peopleRequired }}</p>
-                <p><strong>Created On:</strong> {{ commission.created }}</p>
                 <a href= "{{ commission.get_absolute_url }}"> View Details</a>
         </div>
             {% empty %}
