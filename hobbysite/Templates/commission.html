@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title%} Commission Details{% endblock %}
+{% block content %}
+
+    <h2> Commission Details </h2>
+    
+    <ul>
+        <p><strong>Title:</strong> {{ commission.title }}</p>
+        <p><strong>Description:</strong> {{ commission.description }}</p>
+        <p><strong>People Required:</strong> {{ commission.peopleRequired }}</p>
+        <p><strong>Created On:</strong> {{ commission.created }}</p>
+    </ul>
+<section class="content">
+    <h3> Comments </h3>
+    {% for comment in commission.comments_set.all %}
+    <ul>
+        <li>{{ comment.entry }}</li>
+        <p><strong> Created On:</strong>{{comment.created}}</p>
+        <p><strong> Updated On:</strong>{{comment.updated}}</p>
+        
+    </ul>
+    {% empty %}
+        <li> No comments yet. Be the first to comment!</li>
+    {% endfor %}
+        
+    <a href= "/commissions/list/"> Back to Commissions Lists </a>
+
+</section>
+
+{% endblock %}

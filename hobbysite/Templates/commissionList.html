@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Commission List{% endblock %}
+{% block content %}
+<section class="content">
+    <h2> Commission List</h2>
+    {% for commission in commissions %}
+        <div class ="content-box">
+                <p><strong>Title:</strong> {{ commission.title }}</p>
+                <p><strong>Description:</strong> {{ commission.description }}</p>
+                <p><strong>People Required:</strong> {{ commission.peopleRequired }}</p>
+                <p><strong>Created On:</strong> {{ commission.created }}</p>
+                <a href= "{{ commission.get_absolute_url }}"> View Details</a>
+        </div>
+            {% empty %}
+                <li> No commission available. </li>
+            {% endfor %}
+    </section>
+    </h2>
+    </aside>
+{% endblock %}
+    
