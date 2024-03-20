@@ -1,7 +1,33 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %} Commission List{% endblock %}
+{% block styles %}
+<style>
+    .content-box {
+        background-color: antiquewhite;
+        border:1px solid #000000;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 20px 0;
+        width: 400px;
+        height: 200px;
+        box-sizing: border-box;
+    }
+    .content {
+            flex-grow: 3;
+        }
+    a {
+        color: blue;
+    }
+    main {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 20px;  
+    }
+</style>
+{% endblock %}
 {% block content %}
+
 <section class="content">
     <h2> Commission List</h2>
     {% for commission in commissions %}
@@ -15,8 +41,7 @@
             {% empty %}
                 <li> No commission available. </li>
             {% endfor %}
-    </section>
-    </h2>
-    </aside>
+</section>
+
 {% endblock %}
     
