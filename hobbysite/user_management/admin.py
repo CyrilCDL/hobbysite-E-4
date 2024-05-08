@@ -5,7 +5,6 @@ from .models import Profile
 
 
 class ProfileAdmin(admin.ModelAdmin):
-    model = Profile
-
+    model = Profile 
 
 admin.site.register(Profile)

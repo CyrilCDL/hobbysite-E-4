@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Commission List{% endblock %}
+{% block styles %}
+<style>
+    .content-box {
+        background-color: antiquewhite;
+        border:1px solid #000000;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 20px 0;
+        width: 400px;
+        height: 200px;
+        box-sizing: border-box;
+    }
+    .content {
+            flex-grow: 3;
+        }
+    main {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 20px;  
+    }
+    a:link {
+        color:#fff;
+        }
+    a:visited{
+        color: blue;
+    }
+
+</style>
+{% endblock %}
+{% block content %}
+
+<section class="content">
+    <h2> Commission List</h2>
+    {% for commission in commissions %}
+        <div class ="content-box">
+                <p><strong>Title:</strong> {{ commission.title }}</p>
+                <p><strong>Description:</strong> {{ commission.description }}</p>
+                <p><strong>People Required:</strong> {{ commission.peopleRequired }}</p>
+                <a href= "{{ commission.get_absolute_url }}"> View Details</a>
+        </div>
+            {% empty %}
+                <li> No commission available. </li>
+            {% endfor %}
+</section>
+
+{% endblock %}
+    
