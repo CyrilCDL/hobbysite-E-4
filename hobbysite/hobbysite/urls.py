@@ -19,4 +19,15 @@ from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+<<<<<<< Updated upstream
+=======
+    path('', include('user_management.urls', namespace='user_management')),
+    path('', include('blog.urls', namespace='blog')),
+    path('merchstore/', include('merchstore.urls', namespace="merchstores")),
+    path('', include('commissions.urls', namespace='commissions')),
+    path('', include('wiki.urls', namespace='wiki')),
+    path('login', auth_views.LoginView.as_view(), name='login'),
+    path('logout', auth_views.LogoutView.as_view(), name='logout'),
+    path('accounts/', include("django.contrib.auth.urls")),
+>>>>>>> Stashed changes
 ]
