@@ -28,7 +28,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('user_management.urls', namespace='user_management')),
     path('', include('blog.urls', namespace='blog')),
-    path('', include('merchstore.urls', namespace='merchstore')),
+    path('merchstore/', include('merchstore.urls', namespace="merchstores")),
     path('', include('commissions.urls', namespace='commissions')),
     path('', include('wiki.urls', namespace='wiki')),
     path('login', auth_views.LoginView.as_view(), name='login'),
