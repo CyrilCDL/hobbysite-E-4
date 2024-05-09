@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block title %}Create new commission {% endblock %}
+{% block content %}
+
+<style>
+    .container-custom {
+        background-color: white; 
+        padding: 20px; 
+        border-radius: 10px; 
+        margin-top: 20px; 
+        max-width: 600px; 
+        margin: 0 auto; 
+        border: 1px solid #333; 
+    }
+    
+    .form-control {
+        background-color: white;
+        border: 1px solid #333; 
+        border-radius: 5px; 
+        padding: 8px 12px; 
+        width: 100%; 
+    }
+    .form-control:focus {
+        border-color: #80bdff; 
+        outline: none; 
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); 
+    }
+    .form-label {
+        font-weight: bold; 
+    }
+
+    main{
+        margin-left: 100px;
+    }
+
+    h1, h2,label{
+        color: #333
+    }
+
+    .btn-color{
+        background-color: #333;
+        color: antiquewhite;
+    }
+
+    main a:link{
+        color: antiquewhite;
+    }
+    main a:visited{
+        color: antiquewhite;
+    }
+
+    
+    
+</style>
+
+<div class="container container-custom">
+    <h1>Create Commission</h1>
+    <form method="POST" action="{% url 'commissions:commission' pk=form.instance.pk %}">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_title" class="form-label">Title</label>
+            {{ form.title|add_class:"form-control" }}
+        </div>
+        <div class="mb-3">
+            <label for="id_description" class="form-label">Description</label>
+            {{ form.description|add_class:"form-control" }}
+        </div>
+        <h2>Jobs</h2>
+        {{ job_formset.management_form }}
+        <div class="table-responsive">
+            <table class="table table-sm">
+                {% for form in job_formset %}
+                <tr>
+                    {{ form.as_table }}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <button type="submit" class="btn btn-secondary btn-color">Create</button>
+        <a href="/commissions/list/" class="btn btn-secondary btn-color">Back to Commissions List</a>
+    </form>
+</div>
+{% endblock %}

@@ -135,6 +135,7 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR/'media'
 APPEND_SLASH = True
 
+
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 
