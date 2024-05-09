@@ -44,8 +44,44 @@
 {% endblock styles%}
 {% block content %}
 <h1 class = "headbar">Products</h1>
-    <h2>
-        <p style="font-size: 36pt; margin-right: 15px;">
+    {% if user.is_authenticated %}
+        <h2>Your Products</h2>
+            {% for product_type in object_list %}
+                    <p class = "typebar">
+                        {{ product_type.name }}
+                    </p>
+                    {% for product in my_products %}
+                        {% if product.product_type == product_type %}
+                        <a href="{{ product.get_absolute_url }}">
+                            <div class ="product-box">
+                                {{ product }}
+                            </div>
+                        </a>
+                        {% endif %}
+                    {% endfor %}
+            {% endfor %}
+            <h2>All Products</h2>
+                {% if object_list.exists %}
+                    {% for product_type in object_list %}
+                            <p class = "typebar">
+                                {{ product_type.name }}
+                            </p>
+                        {% for product in product_type.products.all %}
+                            {% if product.author != request.user.profile %}
+                                <a href="{{ product.get_absolute_url }}">
+                                    <div class ="product-box">
+                                        {{ product }}
+                                    </div>
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                {% else %}
+                    <p>No products under this categories.</p>
+                {% endif %}
+        <a href="{% url 'merchstore:product_create' %}"><button>Create A Product</button></a>
+    {% else %}
+        <h2>All Products</h2>
             {% for product_type in object_list %}
                 <p class = "typebar">
                     {{ product_type.name }}
@@ -58,6 +94,5 @@
                     </a>
                 {% endfor %}
             {% endfor %}
-        </p>
-    </h2>
+    {% endif %}
 {% endblock content %}
