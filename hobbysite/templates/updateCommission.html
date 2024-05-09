@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Create new commission {% endblock %}
+{% block content %}
+  <h2>Update Commission and Jobs</h2>
+  <form method="POST" action="{% url 'commissions:commission_edit' pk=form.instance.pk %}">
+    {% csrf_token %}
+    {{ form.as_p }} {# Render commission form fields #}
+    <table>
+      {% for form in job_formset %}
+      {{ form.as_table }}
+      {% endfor %}
+    <button type="submit" class="btn btn-primary"> Update </button>
+  </form>
+{% endblock %}
+    

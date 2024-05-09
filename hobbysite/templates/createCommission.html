@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Create new commission {% endblock %}
+{% block content %}
+
+<div class="container">
+    <h1>Create Commission</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.as_p }}
+        </div>
+        <h2>Jobs</h2>
+        {{ job_formset.management_form }}
+        <div class="table-responsive">
+            <table class="table table-sm">
+                {% for form in job_formset %}
+                <tr>
+                    {{ form.as_table }}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+    <ul class="list-unstyled mt-3">
+        <li>
+            <a href="/commissions/list/">Back to Commissions List</a>
+        </li>
+    </ul>
+</div>
+{% endblock %}
