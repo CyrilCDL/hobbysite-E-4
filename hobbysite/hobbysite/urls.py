@@ -18,16 +18,19 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from .views import HomePageView
 
 urlpatterns = [
     path('admin', admin.site.urls),
     path('', include('commissions.urls', namespace='commissions')),
+    path('', include('wiki.urls', namespace='wiki')),
+    path('', include('merchstore.urls', namespace='merchstore')),
+    path('', include('blog.urls', namespace='blog')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('profile/', include('user_management.urls', namespace="user_management")),
-    path('homepage/', include('homepage.urls', namespace="homepage")),
+    path('homepage/', HomePageView.as_view(), name='homepage'),
 
 ]
 
-app_name = "commissions"
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
