@@ -21,14 +21,14 @@ from django.conf.urls.static import static
 from .views import HomePageView
 
 urlpatterns = [
-    path('admin', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('', include('commissions.urls', namespace='commissions')),
     path('', include('wiki.urls', namespace='wiki')),
     path('merchstore/', include('merchstore.urls', namespace='merchstore')),
     path('', include('blog.urls', namespace='blog')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('profile/', include('user_management.urls', namespace="user_management")),
-    path('homepage', HomePageView.as_view(), name='homepage'),
+    path('homepage/', HomePageView.as_view(), name='homepage'),
 
 ]
 
