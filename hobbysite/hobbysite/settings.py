@@ -23,7 +23,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+<<<<<<< Updated upstream
 SECRET_KEY = os.getenv('SECRET_KEY')
+=======
+
+# SECRET_KEY = 'django-insecure-6sk@^!$&bs1eqz2)gw)l6(u0iv&p0u+)h0du4)+_pq8w7p9=zp'
+# SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY')
+
+>>>>>>> Stashed changes
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -44,6 +52,10 @@ INSTALLED_APPS = [
     "wiki",
     "commissions",
     "blog",
+<<<<<<< Updated upstream
+=======
+    "user_management",
+>>>>>>> Stashed changes
 ]
 
 MIDDLEWARE = [
@@ -123,7 +135,25 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+<<<<<<< Updated upstream
+=======
+STATICFILES_DIRS = [
+    BASE_DIR/'static'
+]
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR/'media'
+APPEND_SLASH = True
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+
+>>>>>>> Stashed changes
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+<<<<<<< Updated upstream
+=======
+LOGIN_REDIRECT_URL = '/homepage'
+LOGOUT_REDIRECT_URL = '/homepage'
+>>>>>>> Stashed changes
