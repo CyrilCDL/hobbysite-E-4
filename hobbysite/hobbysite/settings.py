@@ -23,7 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+
+# SECRET_KEY = 'django-insecure-6sk@^!$&bs1eqz2)gw)l6(u0iv&p0u+)h0du4)+_pq8w7p9=zp'
+# SECRET_KEY = os.getenv('SECRET_KEY')
 SECRET_KEY = os.getenv('SECRET_KEY')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -129,7 +133,8 @@ STATICFILES_DIRS = [
 ]
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR/'media'
-APPEND_SLASH = False
+APPEND_SLASH = True
+
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
@@ -138,5 +143,5 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-LOGIN_REDIRECT_URL = '/homepage/'
-LOGOUT_REDIRECT_URL = '/profile/login/'
+LOGIN_REDIRECT_URL = '/homepage'
+LOGOUT_REDIRECT_URL = '/homepage'

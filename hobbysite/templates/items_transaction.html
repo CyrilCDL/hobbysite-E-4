@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    Products
+{% endblock title %}
+{% block styles %}
+<style>
+    a {
+        color:#333;
+        text-decoration:none;
+        }
+
+    .headbar {
+        background-color: #333;
+        color: #fff;
+        padding: 10px 200px;
+        text-align: center;
+        font-family:Verdana, sans-serif;
+        word-wrap: break-word;
+     }
+
+    .typebar {
+        background-color: #4c4444;
+        color: #fff;
+        padding: 0px;
+        text-align: center;
+        font-family:Verdana, sans-serif;
+        word-wrap: break-word;
+    }
+
+    .product-box {
+        background-color: lightgray;
+        box-sizing: border-box;
+        padding: 5px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        cursor: pointer;
+    }
+
+</style>
+{% endblock styles%}
+{% block content %}
+<h1 class = "headbar">Products</h1>
+    {% if user.is_authenticated %}
+        <h2>Your Sold Items</h2>
+            {% for buyer in seller_details %}
+                <p class = "typebar">
+                    Buyer - {{ buyer.buyer }}
+                </p>
+                {% for transactions in seller_details %}
+                    {% if transactions.buyer == buyer.buyer %}
+                        <div class ="product-box">
+                            {{ transactions.product }} - {{ transactions.quantity }} pcs
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+    {% endif %}
+{% endblock content %}
