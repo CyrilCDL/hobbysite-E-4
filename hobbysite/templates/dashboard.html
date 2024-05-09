@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% block title%} Commission Details{% endblock %}
+{% block styles %}
+<style>
+    .content-box {
+        background-color: antiquewhite;
+        border:1px solid #000000;
+        border-radius: 5px;
+        width: 350px;
+        height: 150px;
+        box-sizing: border-box;
+    }
+    a:link {
+        color: #000;
+    }
+    a:visited{
+        color: blue;
+    }
+</style>
+{% endblock %}
+{% block content %}
+
+<section class="content">
+    {% if user.is_authenticated %}
+    <h1>Dashboard - {{ username }}</h1>
+
+        <h3>List of Products Bought: </h3>
+        {% for pb in object.transactions.all %}
+            <h4>
+            <li>
+                    {{ pb }}
+            </li>
+            </h4>
+        {% endfor %}
+
+        <h3>List of Products Sold: </h3>
+        {% for ps in object.products.all %}
+            <h4>
+            <li>
+                <a href="{{ ps.get_absolute_url }}">
+                    {{ ps }}
+                </a>
+            </li>
+            </h4>
+        {% endfor %}
+
+        <h3>List of Wiki Articles Created: </h3>
+        {% for wc in object.blogArticles.all %}
+            <h4>
+            <li>
+                <a href="{{ wc.get_absolute_url }}">
+                    {{ wc }}
+                </a>
+            </li>
+            </h4>
+        {% endfor %}
+
+        <h3>List of Blog Articles Created: </h3>
+        {% for bc in object.articles.all %}
+            <h4>
+            <li>
+                <a href="{{ bc.get_absolute_url }}">
+                    {{ bc }}
+                </a>
+            </li>
+            </h4>
+        {% endfor %}
+
+        <h3>List of Commissions Created: </h3>
+        {% for commission in my_posted_commissions %}
+            <h4>
+            <li>
+               
+                <a href="{{ commission.get_absolute_url }}">
+                    {{ commission.title }} - {{ commission.status }}
+                </a>
+            </li>
+            </h4>
+        {% endfor %}
+        <h3>List of Commissions Applied: </h3>
+        {% for commission in my_applied_commissions %}
+            <h4>
+            <li>
+                <a href="{{  commission.get_absolute_url }}">
+                    {{ cj.job.commission }}
+                </a>
+            </li>
+            </h4>
+        {% endfor %}
+{% else %}
+    You are not logged-in!
+
+{% endif %}
+
+
+{% endblock %}
+
