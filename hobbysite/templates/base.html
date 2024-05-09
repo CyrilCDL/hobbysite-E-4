@@ -38,7 +38,7 @@
         }
 
         .nav-link {
-            color: white;
+            color: antiquewhite;
             text-decoration:none;
         }
         .nav-item{
@@ -46,8 +46,8 @@
             margin-right: 20px;
         }
 
-        nav a{
-            color: white
+        nav a {
+            color: antiquewhite;
         }
 
         #Nav {
@@ -74,19 +74,28 @@
 
         .login-button {
         background-color: transparent;
-        color: inherit;
+        color: antiquewhite;
         border: none;
         /* Additional styling if needed */
     }
         
         main a:visited{
-            color:blue;
+            color:#1E90FF;
         }
 
         main a{
             color:white
         }
 
+        main a.back-link {
+            color: #007bff; /* Blue color */
+            text-decoration: none; /* Remove underline */
+            font-weight: bold; /* Make it bold */
+        }
+
+        main a:hover {
+            color: #0056b3; /* Darker blue on hover */
+        }
     </style>
         {% block styles %}
         {% endblock %}
