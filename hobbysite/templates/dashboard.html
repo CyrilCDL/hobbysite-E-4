@@ -3,96 +3,139 @@
 {% block title%} Commission Details{% endblock %}
 {% block styles %}
 <style>
-    .content-box {
-        background-color: antiquewhite;
-        border:1px solid #000000;
-        border-radius: 5px;
-        width: 350px;
-        height: 150px;
-        box-sizing: border-box;
+    main{
+        margin-left: 10px;
     }
-    a:link {
-        color: #000;
+
+    body {
+    font-family: Montserrat, sans-serif;
+    background-color: #f8f9fa; /* Light gray background */
     }
-    a:visited{
-        color: blue;
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .dashboard-header {
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 40px;
+    }
+
+    .dashboard-section {
+        margin-bottom: 40px;
+    }
+
+    .dashboard-section h3 {
+        margin-bottom: 20px;
+    }
+
+    .list-group-item {
+        background-color: #fff; /* White background for list items */
+        border-color: #dee2e6;
+        border-radius: 0;
+    }
+
+    .list-group-item a {
+        color: #212529; /* Dark text color for links */
+    }
+
+    .alert-danger {
+        margin-top: 40px;
     }
 </style>
 {% endblock %}
 {% block content %}
+<body>
+<section class="dashboard-container">
+    <div class="container">
+        {% if user.is_authenticated %}
+            <h1 class="mt-5 mb-4">Dashboard - {{ username }}</h1>
 
-<section class="content">
-    {% if user.is_authenticated %}
-    <h1>Dashboard - {{ username }}</h1>
+            <div class="dashboard-section">
+                <h3>List of Products Bought:</h3>
+                <ul class="list-group mb-4">
+                {% for pb in object.transactions.all %}
+                    <li class="list-group-item">{{ pb }}</li>
+                {% endfor %}
+            </ul>
+            </div>
+            
+            <div class="dashboard-section">
+                <h3>List of Products Sold:</h3>
+                <ul class="list-group mb-4">
+                {% for ps in object.products.all %}
+                    <li class="list-group-item">
+                        <a href="{{ ps.get_absolute_url }}">{{ ps }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+            </div>
+            
 
-        <h3>List of Products Bought: </h3>
-        {% for pb in object.transactions.all %}
-            <h4>
-            <li>
-                    {{ pb }}
-            </li>
-            </h4>
-        {% endfor %}
-
-        <h3>List of Products Sold: </h3>
-        {% for ps in object.products.all %}
-            <h4>
-            <li>
-                <a href="{{ ps.get_absolute_url }}">
-                    {{ ps }}
-                </a>
-            </li>
-            </h4>
-        {% endfor %}
-
-        <h3>List of Wiki Articles Created: </h3>
-        {% for wc in object.blogArticles.all %}
-            <h4>
-            <li>
-                <a href="{{ wc.get_absolute_url }}">
-                    {{ wc }}
-                </a>
-            </li>
-            </h4>
-        {% endfor %}
-
-        <h3>List of Blog Articles Created: </h3>
-        {% for bc in object.articles.all %}
-            <h4>
-            <li>
-                <a href="{{ bc.get_absolute_url }}">
-                    {{ bc }}
-                </a>
-            </li>
-            </h4>
-        {% endfor %}
-
-        <h3>List of Commissions Created: </h3>
-        {% for commission in my_posted_commissions %}
-            <h4>
-            <li>
-               
-                <a href="{{ commission.get_absolute_url }}">
-                    {{ commission.title }} - {{ commission.status }}
-                </a>
-            </li>
-            </h4>
-        {% endfor %}
-        <h3>List of Commissions Applied: </h3>
-        {% for commission in my_applied_commissions %}
-            <h4>
-            <li>
-                <a href="{{  commission.get_absolute_url }}">
-                    {{ cj.job.commission }}
-                </a>
-            </li>
-            </h4>
-        {% endfor %}
-{% else %}
-    You are not logged-in!
-
+            <div class="dashboard-section">
+                <h3>List of Products Bought:</h3>
+                <ul class="list-group mb-4">
+                {% for pb in object.transactions.all %}
+                    <li class="list-group-item">{{ pb }}</li>
+                {% endfor %}
+            </ul>
+            </div>
+            
+            <div class="dashboard-section">
+                <h3>List of Products Sold:</h3>
+                <ul class="list-group mb-4">
+                {% for ps in object.products.all %}
+                    <li class="list-group-item">
+                        <a href="{{ ps.get_absolute_url }}">{{ ps }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+            </div>
+            
+            <div class="dashboard-section">
+                <h3>List of Products Sold:</h3>
+                <ul class="list-group mb-4">
+                {% for ps in object.products.all %}
+                    <li class="list-group-item">
+                        <a href="{{ ps.get_absolute_url }}">{{ ps }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+            </div>
+            <div class="dashboard-section">
+                <h3>List of Products Sold:</h3>
+                <ul class="list-group mb-4">
+                {% for ps in object.products.all %}
+                    <li class="list-group-item">
+                        <a href="{{ ps.get_absolute_url }}">{{ ps }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+            </div>
+            <div class="dashboard-section">
+                <h3>List of my Applied Commissions:</h3>
+                <ul class="list-group mb-4">
+                    {% for commission in my_applied_commissions %}
+                        <li class="list-group-item">
+                            <a href="{{ commission.get_absolute_url }}">{{commission.title}}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="dashboard-section">
+                <h3>List of my Applied Commissions:</h3>
+                <ul class="list-group mb-4">
+                    {% for commission in my_applied_commissions %}
+                        <li class="list-group-item">
+                            <a href="{{ commission.get_absolute_url }}">{{commission.title}}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
 {% endif %}
-
-
+        </body>
 {% endblock %}
 
