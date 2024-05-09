@@ -3,9 +3,43 @@
 {% block title %}Merchstore{% endblock %}
 {% block display %}Update Product{% endblock %}
 {% block content %}
-<form method="post">
+<style>
+    .box {
+        background-color: black;;
+        border-radius: 10px;
+        color: #fff;
+        margin-top: 1px;
+        width: 500px;
+        height: 550px;
+        padding-top: 20px;
+        padding-left: 50px;
+        text-align: left;
+        font-family:Verdana, sans-serif;
+        word-wrap: break-word;
+    }
+    .button {
+        background-color: black; 
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-left: 300px;
+        margin-top: 50px;
+    }
+    .button:hover {
+        background-color:white;
+        color: black;
+        border-color: black; 
+    }
+</style>
+<form class="box" method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button>Update</button>
+    <button class="button">Update</button>
 </form>
 {% endblock %}

@@ -5,13 +5,66 @@
 {% endblock title %}
 {% block styles %}
 <style>
+    main{
+        margin-left: 500px;
+    }
+    a {
+        color:#333;
+        text-decoration:none;
+        }
+    .button {
+        background-color: black; 
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .button:hover {
+        background-color:white;
+        color: black;
+        border-color: black; 
+    }
+    .disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+    .return {
+        background-color: black; 
+        border-color: black; 
+        border-style: solid;
+        border-radius: 10px;
+        color: white;
+        padding: 3px 3px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .return:hover {
+        background-color:white;
+        color: black;
+        border-color: black; 
+    }
     .box {
-        background-color: #4c4444;
+        background-color: black;
+        border-radius: 10px;
         color: #fff;
         margin-top: 180px;
         width: 500px;
+<<<<<<< Updated upstream
         height: 130px;
         padding-top: 1px;
+=======
+        height: 190px;
+        padding-top: 3px;
+>>>>>>> Stashed changes
         text-align: center;
         font-family:Verdana, sans-serif;
         word-wrap: break-word;
@@ -31,12 +84,39 @@
 </style>
 {% endblock styles%}
 {% block content %}
-    <div class ="box">
-        <h1>{{ product.name }}</h1>
+    <a class="return" href=/merchstore/items>Return to Products List</a>
+    <div class ="box" >
+        <h1 class="fw-bold mb-2 text-uppercase">{{ product.name }}</h1>
         <p>Php {{ product.price }}</p>
     </div>
     <div class="description">
+        <p><b>About the product:</b></p>
         <p>{{ product.description }}</p>
+<<<<<<< Updated upstream
+=======
+    {% if user.is_authenticated %}
+        {% if product.author != request.user.profile %}
+            <form method="post">
+                {% csrf_token %} {{ form.as_p }}
+                {% if sold_out %}
+                    <button class="button disabled" type="submit" disabled>Buy Now</button>
+                {% else %}
+                    <button class="button" type="submit">Buy Now</button>
+            {% endif %}
+            </form>
+        {% else %}
+            <a href="{%url 'merchstore:product_update' product.pk%}"><button class="button" type="submit">Update Product</button></a>
+        {% endif %}
+    {% else %}
+        <form method="post">
+            {% csrf_token %} {{ form.as_p }}
+            {% if sold_out %}
+                <button class="button" type="submit" disabled>Buy Now</button>
+            {% else %}
+                <button class="button" type="submit">Buy Now</button>
+            {% endif %}
+        </form>
+    {% endif %}
+>>>>>>> Stashed changes
     </div>
-    <a href=/merchstore/items>Return to Products List</a>
 {% endblock content %}
