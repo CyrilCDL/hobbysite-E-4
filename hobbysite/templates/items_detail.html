@@ -58,13 +58,8 @@
         color: #fff;
         margin-top: 180px;
         width: 500px;
-<<<<<<< Updated upstream
         height: 130px;
         padding-top: 1px;
-=======
-        height: 190px;
-        padding-top: 3px;
->>>>>>> Stashed changes
         text-align: center;
         font-family:Verdana, sans-serif;
         word-wrap: break-word;
@@ -92,8 +87,6 @@
     <div class="description">
         <p><b>About the product:</b></p>
         <p>{{ product.description }}</p>
-<<<<<<< Updated upstream
-=======
     {% if user.is_authenticated %}
         {% if product.author != request.user.profile %}
             <form method="post">
@@ -117,6 +110,5 @@
             {% endif %}
         </form>
     {% endif %}
->>>>>>> Stashed changes
     </div>
 {% endblock content %}

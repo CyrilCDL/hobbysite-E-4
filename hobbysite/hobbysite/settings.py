@@ -23,8 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-6sk@^!$&bs1eqz2)gw)l6(u0iv&p0u+)h0du4)+_pq8w7p9=zp'
+
+# SECRET_KEY = 'django-insecure-6sk@^!$&bs1eqz2)gw)l6(u0iv&p0u+)h0du4)+_pq8w7p9=zp'
+# SECRET_KEY = os.getenv('SECRET_KEY')
 SECRET_KEY = os.getenv('SECRET_KEY')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -63,7 +66,7 @@ ROOT_URLCONF = 'hobbysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,'Templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -114,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Asia/Manila'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
@@ -125,15 +128,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR/'static'
+]
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR/'media'
+APPEND_SLASH = True
+
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-MEDIA_ROOT = BASE_DIR/'media/'
-MEDIA_URL = '/media/'
-
-APPEND_SLASH = False
-
-LOGOUT_REDIRECT_URL = '/wiki/articles/'
-LOGIN_REDIRECT_URL = '/wiki/articles/'#change to homepage when meron na
+LOGIN_REDIRECT_URL = '/homepage'
+LOGOUT_REDIRECT_URL = '/homepage'

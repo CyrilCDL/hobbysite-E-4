@@ -16,24 +16,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.shortcuts import redirect
-
 from django.conf import settings
 from django.conf.urls.static import static
-
-from django.contrib.auth import views as auth_views
-from django.contrib.auth.views import LoginView
+from .views import HomePageView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('user_management.urls', namespace='user_management')),
-    path('', include('blog.urls', namespace='blog')),
-    path('merchstore/', include('merchstore.urls', namespace="merchstores")),
     path('', include('commissions.urls', namespace='commissions')),
     path('', include('wiki.urls', namespace='wiki')),
-    path('login', auth_views.LoginView.as_view(), name='login'),
-    path('logout', auth_views.LogoutView.as_view(), name='logout'),
-    path('accounts/', include("django.contrib.auth.urls")),
+    path('merchstore/', include('merchstore.urls', namespace='merchstore')),
+    path('', include('blog.urls', namespace='blog')),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('profile/', include('user_management.urls', namespace="user_management")),
+    path('homepage/', HomePageView.as_view(), name='homepage'),
+
 ]
+
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
