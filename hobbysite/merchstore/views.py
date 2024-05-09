@@ -1,34 +1,75 @@
 from .models import Product, ProductType
-from django.shortcuts import render
+from django.shortcuts import redirect
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy, reverse
 from .models import ProductType, Product, Transaction
-from .forms import TransactionForm
+from .forms import TransactionForm, ProductForm
 from django.views.generic.edit import FormMixin, CreateView, UpdateView
-from user_management.models import Profile
+from django.http import HttpRequest, HttpResponse
 
 
 class ProductListView(ListView):
     model = ProductType
     template_name = 'items_list.html'
 
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            ctx['my_products'] = Product.objects.filter(
+                author=self.request.user.profile
+            )
+            ctx['all_products'] = Product.objects.all()
+        return ctx
+
 
 class ProductDetailView(FormMixin, DetailView):
     model = Product
+    form_class = TransactionForm
     template_name = 'items_detail.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        product = self.get_object()
+        ctx['form'] = TransactionForm()
+        if product.stock == 0:
+            ctx['sold_out'] = True
+        else:
+            ctx['sold_out'] = False
+        return ctx
+
+    def post(self, request, *args, **kwargs):
+        form = TransactionForm(request.POST)
+        product = self.get_object()
+
+        if form.is_valid():
+            if request.user.is_authenticated:
+                transaction = form.save(commit=False)
+                transaction.buyer = request.user.profile
+                transaction.product = product
+                transaction.status = "ON CART"
+                transaction.save()
+
+                product.stock -= transaction.amount
+                if product.stock == 0:
+                    product.status = "OUT OF STOCK"
+                else:
+                    product.status = "AVAILABLE"
+                product.save()
+                return redirect("merchstore:cart")
+            else:
+                return redirect("login")
+        return self.render_to_response(self.get_context_data(form=form))
 
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     template_name = 'items_create.html'
-    fields = ('name', 'product_type', 'description',
-              'price', 'stock', 'status')
+    form_class = ProductForm
 
     def form_valid(self, form):
-        form.instance.owner = self.request.user.profile
+        form.instance.author = self.request.user.profile
         return super().form_valid(form)
 
 
@@ -37,64 +78,79 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'items_update.html'
     fields = ('name', 'product_type', 'description',
               'price', 'stock', 'status')
-    success_url = reverse_lazy('merchstore:product_type')
+
+    def get_success_url(self) -> str:
+        return reverse_lazy('merchstore:product', kwargs={'pk': self.object.pk})
 
     def form_valid(self, form):
         product = form.save(commit=False)
         if product.stock == 0:
-            product.status = 'OUT_OF_STOCK'
+            product.status = 'OUT OF STOCK'
         else:
             product.status = 'AVAILABLE'
         product.save()
         return super().form_valid(form)
 
+    def post(self, request, *args, **kwargs):
+        product = self.get_object()
+        if product.stock == 0:
+            product.status = "OUT OF STOCK"
+        else:
+            product.status = "AVAILABLE"
+        product.save()
+        return super().post(request, *args, **kwargs)
+
 
 class CartView(LoginRequiredMixin, ListView):
     model = Transaction
     template_name = 'items_cart.html'
-    context_object_name = 'owner_transactions'
+    context_object_name = 'author_transactions'
+    form_class = TransactionForm
 
     def get_queryset(self):
         return Transaction.objects.filter(buyer=self.request.user.profile)
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        owner_transactions = {}
-        for transaction in context['owner_transactions']:
-            owner = transaction.product.owner
-            if owner:
-                owner_display_name = owner.display_name
-                if owner_display_name not in owner_transactions:
-                    owner_transactions[owner_display_name] = []
-                owner_transactions[owner_display_name].append(transaction)
-        context['owner_transactions'] = owner_transactions
-        return context
+        ctx = super().get_context_data(**kwargs)
+        author_transactions = {}
+        for transaction in ctx['author_transactions']:
+            author = transaction.product.author
+            if author:
+                author_display_name = author.display_name
+                if author_display_name not in author_transactions:
+                    author_transactions[author_display_name] = []
+                author_transactions[author_display_name].append(transaction)
+        ctx['author_transactions'] = author_transactions
+        for transaction in ctx['author_transactions']:
+            ()
+        ctx['author_transactions'] = author_transactions
+        return ctx
 
 
 class TransactionListView(LoginRequiredMixin, ListView):
     model = Transaction
     template_name = 'items_transaction.html'
-    context_object_name = 'transactions'
+    context_object_name = 'author_transactions'
+    form_class = TransactionForm
 
     def get_queryset(self):
-        return Transaction.objects.filter(product__owner=self.request.user.profile)
+        return Transaction.objects.filter(buyer=self.request.user.profile)
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        transaction_dict = {}
-        for transaction in context['transactions']:
-            buyer = transaction.buyer
-            if buyer not in transaction_dict:
-                transaction_dict[buyer] = []
-            transaction_dict[buyer].append(transaction)
-        context['transaction_dict'] = transaction_dict
-        return context
-
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        form = TransactionForm(request.POST, instance=self.object)
-        if form.is_valid():
-            form.save()
-            return reverse('merchstore:cart')
-        else:
-            return self.render_to_response(self.get_context_data(form=form))
+        ctx = super().get_context_data(**kwargs)
+        author_transactions = {}
+        for transaction in ctx['author_transactions']:
+            author = transaction.buyer
+            if author:
+                author_display_name = author.display_name
+                if author_display_name not in author_transactions:
+                    author_transactions[author_display_name] = []
+                author_transactions[author_display_name].append(transaction)
+        ctx['author_transactions'] = author_transactions
+        for transaction in ctx['author_transactions']:
+            ()
+        ctx['author_transactions'] = author_transactions
+        ctx['seller_details'] = Transaction.objects.filter(
+            product__author=self.request.user.profile
+        )
+        return ctx

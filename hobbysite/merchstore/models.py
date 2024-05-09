@@ -21,6 +21,11 @@ class ProductType(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
+    author = models.ForeignKey(
+        Profile,
+        on_delete=models.SET_NULL,
+        null=True,
+    )
     description = models.TextField()
     product_type = models.ForeignKey(
         ProductType,
@@ -33,8 +38,8 @@ class Product(models.Model):
 
     STATUS_CHOICES = (
         ("AVAILABLE", "Available"),
-        ("ON_SALE", "On Sale"),
-        ("OUT_OF_STOCK", "Out of Stock"),
+        ("ON SALE", "On Sale"),
+        ("OUT OF STOCK", "Out of Stock"),
     )
     status = models.CharField(
         max_length=50,
@@ -69,16 +74,16 @@ class Transaction(models.Model):
     amount = models.PositiveIntegerField(default=0)
 
     STATUS_CHOICES = (
-        ("ON_CART", "On Cart"),
-        ("TO_PAY", "To Pay"),
-        ("TO_SHIP", "To Ship"),
-        ("TO_RECEIVE", "To Receive"),
+        ("ON CART", "On Cart"),
+        ("TO PAY", "To Pay"),
+        ("TO SHIP", "To Ship"),
+        ("TO RECEIVE", "To Receive"),
         ("DELIVERED", "Delivered")
     )
     status = models.CharField(
         max_length=20,
         choices=STATUS_CHOICES,
-        default='ON_CART'
+        default='ON CART'
     )
     created_on = models.DateTimeField(default=timezone.now)
     quantity = models.PositiveIntegerField(default=1)
