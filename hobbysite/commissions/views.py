@@ -13,7 +13,7 @@ from django.http import HttpResponseRedirect
 
 from user_management.models import Profile
 from .models import Commission, JobApplication, Job
-from .forms import CommissionForm, JobFormSet, JobForm, JobApplicationForm
+from .forms import CommissionForm
 
 
 class CommissionListView(LoginRequiredMixin, ListView):
@@ -90,6 +90,10 @@ class CommissionDetailView(LoginRequiredMixin, DetailView):
         context['total_signees'] = total_signees
         context['remaining_manpower'] = remaining_manpower
         context['can_apply'] = can_apply
+
+        # Include the updated commission instance in the context
+        context['commission'] = self.object
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -117,30 +121,16 @@ class CommissionCreateView(LoginRequiredMixin, CreateView):
 
     success_url = reverse_lazy('commissions:commissions')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        if self.request.POST:
-            context['job_formset'] = JobInlineFormSet(self.request.POST)
-        else:
-            context['job_formset'] = JobInlineFormSet()
-        return context
-
     def form_valid(self, form):
-        context = self.get_context_data()
-        job_formset = context['job_formset']
-        if job_formset.is_valid():
-            self.object = form.save()
-            job_formset.instance = self.object
-            job_formset.save()
-            return super().form_valid(form)
-        else:
-            return self.render_to_response(self.get_context_data(form=form))
+        commission = form.save(commit=False)
+        commission.author = self.request.user.profile
+        commission.save()
+        job = commission.job_set.create(
+            role=form.cleaned_data['role'],
+            manpower_required=form.cleaned_data['manpower_required']
+        )
 
-    def get_initial(self):
-        return {'author': self.request.user.profile}
-
-    def get_success_url(self):
-        return reverse_lazy('commissions:commission', kwargs={'pk': self.object.pk})
+        return super().form_valid(form)
 
 
 class CommissionUpdateView(LoginRequiredMixin, UpdateView):
@@ -151,7 +141,14 @@ class CommissionUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse_lazy('commissions:commission', kwargs={'pk': self.object.pk})
 
+    def form_valid(self, form):
+        manpower_required = form.cleaned_data.get('manpower_required')
+        role = form.cleaned_data.get('role')
 
-JobInlineFormSet = inlineformset_factory(
-    Commission, Job, form=JobForm, extra=1, can_delete=True
-)
+        job = self.object.job_set.first()
+        if job:
+            job.manpower_required = manpower_required
+            job.role = role
+            job.save()
+
+        return super().form_valid(form)

@@ -1,23 +1,20 @@
 from django import forms
 
 from .models import Commission, Job, JobApplication
+from django.core.validators import MinValueValidator
 
 
 class CommissionForm(forms.ModelForm):
+    role = forms.CharField(max_length=100)
+    manpower_required = forms.IntegerField(validators=[MinValueValidator(1)])
+
     class Meta:
         model = Commission
-        fields = '__all__'
-        exclude = ["created_on", "updated_on", "author"]
+        # Fields from Commission model
+        fields = ['title', 'description', 'status']
 
-
-class JobForm(forms.ModelForm):
-    class Meta:
-        model = Job
-        fields = ['role', 'manpower_required', 'status']
-
-
-JobFormSet = forms.inlineformset_factory(
-    Commission, Job, form=JobForm, extra=1, can_delete=False)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
 
 class JobApplicationForm(forms.ModelForm):
