@@ -57,7 +57,7 @@
             <div class="dashboard-section">
                 <h3>List of Products Bought:</h3>
                 <ul class="list-group mb-4">
-                {% for pb in object.transactions.all %}
+                    {% for author in author_transactions %}
                     <li class="list-group-item">{{ pb }}</li>
                 {% endfor %}
             </ul>
@@ -66,20 +66,33 @@
             <div class="dashboard-section">
                 <h3>List of Products Sold:</h3>
                 <ul class="list-group mb-4">
-                {% for ps in object.products.all %}
-                    <li class="list-group-item">
-                        <a href="{{ ps.get_absolute_url }}">{{ ps }}</a>
-                    </li>
+                    {% for buyer in seller_details %}
+                    <p class = "typebar">
+                        Buyer - {{ buyer.buyer }}
+                    </p>
+                    {% for transactions in seller_details %}
+                        {% if transactions.buyer == buyer.buyer %}
+                            <div class ="product-box">
+                                {{ transactions.product }} - {{ transactions.quantity }} pcs
+                            </div>
+                        {% endif %}
+                    {% endfor %}
                 {% endfor %}
             </ul>
             </div>
             
 
             <div class="dashboard-section">
-                <h3>List of Products Bought:</h3>
+                <h3>List of Wiki Articles Created:</h3>
                 <ul class="list-group mb-4">
-                {% for pb in object.transactions.all %}
-                    <li class="list-group-item">{{ pb }}</li>
+                    {% for article in object_list %}
+                    <div class="content-box">
+                        {% if article.author.user == request.user %}
+                            <strong>[Your Article]</strong> <br><br>
+                        {% endif %}
+                        <a href="{{ article.get_absolute_url }}"><strong>{{ article.title }}</strong></a>
+                        <strong>[{{ article.articlecategory }}]</strong>
+                    </div>
                 {% endfor %}
             </ul>
             </div>
@@ -88,31 +101,27 @@
                 <h3>List of Products Sold:</h3>
                 <ul class="list-group mb-4">
                 {% for ps in object.products.all %}
-                    <li class="list-group-item">
-                        <a href="{{ ps.get_absolute_url }}">{{ ps }}</a>
-                    </li>
+                    {% for transactions in object_list %}
+                        {% if transactions.product.author.display_name == author %}
+                                <div class ="product-box">
+                                    <b> {{ transactions.product }} - Unit Price: {{ transactions.product.price }} </b>
+                                    <li>{{ transactions.quantity }} pcs</li>
+                                </div>
+                        {% endif %}
+                    {% endfor %}
                 {% endfor %}
             </ul>
             </div>
             
             <div class="dashboard-section">
-                <h3>List of Products Sold:</h3>
+                <h3>List of blog articles created:</h3>
                 <ul class="list-group mb-4">
-                {% for ps in object.products.all %}
-                    <li class="list-group-item">
-                        <a href="{{ ps.get_absolute_url }}">{{ ps }}</a>
-                    </li>
-                {% endfor %}
-            </ul>
-            </div>
-            <div class="dashboard-section">
-                <h3>List of Products Sold:</h3>
-                <ul class="list-group mb-4">
-                {% for ps in object.products.all %}
-                    <li class="list-group-item">
-                        <a href="{{ ps.get_absolute_url }}">{{ ps }}</a>
-                    </li>
-                {% endfor %}
+                    {% for article in object_list  %}
+                    <div class ="content-box">
+                            <h3>
+                                <p><strong>Title:</strong> {{ article.title }}</p> <a href="/blog/article/{{article.id}}">View more</a>
+                            </h3>
+                    {% endfor %}
             </ul>
             </div>
             <div class="dashboard-section">
