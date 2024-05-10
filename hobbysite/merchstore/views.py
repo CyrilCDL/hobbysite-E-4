@@ -1,13 +1,11 @@
-from .models import Product, ProductType
 from django.shortcuts import redirect
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy, reverse
-from .models import ProductType, Product, Transaction
+from .models import ProductType, Product, Transaction, Profile
 from .forms import TransactionForm, ProductForm
 from django.views.generic.edit import FormMixin, CreateView, UpdateView
-from django.http import HttpRequest, HttpResponse
 
 
 class ProductListView(ListView):
@@ -130,27 +128,25 @@ class CartView(LoginRequiredMixin, ListView):
 class TransactionListView(LoginRequiredMixin, ListView):
     model = Transaction
     template_name = 'items_transaction.html'
-    context_object_name = 'author_transactions'
-    form_class = TransactionForm
-
-    def get_queryset(self):
-        return Transaction.objects.filter(buyer=self.request.user.profile)
+    context_object_name = 'transactions'
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        author_transactions = {}
-        for transaction in ctx['author_transactions']:
-            author = transaction.buyer
-            if author:
-                author_display_name = author.display_name
-                if author_display_name not in author_transactions:
-                    author_transactions[author_display_name] = []
-                author_transactions[author_display_name].append(transaction)
-        ctx['author_transactions'] = author_transactions
-        for transaction in ctx['author_transactions']:
-            ()
-        ctx['author_transactions'] = author_transactions
-        ctx['seller_details'] = Transaction.objects.filter(
-            product__author=self.request.user.profile
-        )
+
+        # Filter transactions for the products owned by the current user
+        owned_products = Product.objects.filter(
+            author=self.request.user.profile)
+
+        # Get unique buyers who bought products from the current user
+        buyers = Profile.objects.filter(
+            transactions__product__in=owned_products).distinct()
+
+        # Create a list of tuples where each tuple contains a buyer and their transactions
+        buyers_with_transactions = []
+        for buyer in buyers:
+            transactions = Transaction.objects.filter(
+                buyer=buyer, product__in=owned_products)
+            buyers_with_transactions.append((buyer, transactions))
+
+        ctx['buyers_with_transactions'] = buyers_with_transactions
         return ctx

@@ -16,7 +16,6 @@
         color:white;
         text-decoration:none;
         }
-
     .headbar {
         background-color: black;
         color: #fff;
@@ -34,7 +33,6 @@
         font-family:Verdana, sans-serif;
         word-wrap: break-word;
     }
-
     .product-box {
         background-color: lightgray;
         box-sizing: border-box;
@@ -69,9 +67,9 @@
     {% if user.is_authenticated %}
         <h2>Your Bought Items</h2>
             {% for author in author_transactions %}
-                    <p class = "typebar">
-                        Shop - {{ author }}
-                    </p>
+                <p class = "typebar">
+                    Shop - {{ author }}
+                </p>
                     {% for transactions in object_list %}
                         {% if transactions.product.author.display_name == author %}
                                 <div class ="product-box">
@@ -81,6 +79,6 @@
                         {% endif %}
                     {% endfor %}
             {% endfor %}
-        <button class="return"><a href=/merchstore/items>Return to Products List</a></button>
+        <a href=/merchstore/items class="return">Return to Products List</a>
     {% endif %}
 {% endblock content %}
