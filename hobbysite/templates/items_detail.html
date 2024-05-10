@@ -8,8 +8,12 @@
     main{
         margin-left: 500px;
     }
-    a {
+    main a:link {
         color:#333;
+        text-decoration:none;
+        }
+    main a:visited {
+        color:white;
         text-decoration:none;
         }
     .button {
@@ -83,6 +87,8 @@
     <div class ="box" >
         <h1 class="fw-bold mb-2 text-uppercase">{{ product.name }}</h1>
         <p>Php {{ product.price }}</p>
+        <p>Php {{ product.status }}</p>
+        <p>Php {{ product.stock }}</p>
     </div>
     <div class="description">
         <p><b>About the product:</b></p>
