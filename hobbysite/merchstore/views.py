@@ -119,9 +119,6 @@ class CartView(LoginRequiredMixin, ListView):
                     author_transactions[author_display_name] = []
                 author_transactions[author_display_name].append(transaction)
         ctx['author_transactions'] = author_transactions
-        for transaction in ctx['author_transactions']:
-            ()
-        ctx['author_transactions'] = author_transactions
         return ctx
 
 
@@ -133,15 +130,12 @@ class TransactionListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
 
-        # Filter transactions for the products owned by the current user
         owned_products = Product.objects.filter(
             author=self.request.user.profile)
 
-        # Get unique buyers who bought products from the current user
         buyers = Profile.objects.filter(
             transactions__product__in=owned_products).distinct()
 
-        # Create a list of tuples where each tuple contains a buyer and their transactions
         buyers_with_transactions = []
         for buyer in buyers:
             transactions = Transaction.objects.filter(
