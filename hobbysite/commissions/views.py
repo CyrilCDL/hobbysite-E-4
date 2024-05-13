@@ -16,7 +16,7 @@ from .models import Commission, JobApplication, Job
 from .forms import CommissionForm
 
 
-class CommissionListView(LoginRequiredMixin, ListView):
+class CommissionListView(ListView):
     model = Commission
     template_name = 'commissionList.html'
 
